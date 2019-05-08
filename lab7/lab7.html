@@ -1,0 +1,234 @@
+<html>
+  <head>
+    <title>Chapter 10</title>
+    <link rel="stylesheet" href="lab7.css" />
+    <script src="http://code.jquery.com/jquery-3.1.0.min.js "></script>
+  </head>
+  <body class="tiled">
+    <header>
+      <h1>Art Filters</h1>
+    </header>
+    <main>
+      <div id="sliderBox">
+        <form>
+          <label>Opacity: </label>
+          <p>
+            <input
+              type="range"
+              id="sliderOpacity"
+              min="0"
+              max="100"
+              value="100"
+              class="sliders"
+            />
+            <span id="numOpacity">100</span>%
+          </p>
+          <p>
+            <label>Saturation: </label
+            ><input
+              type="range"
+              id="sliderSaturation"
+              min="1"
+              max="300"
+              value="100"
+              class="sliders"
+            />
+            <span id="numSaturation">100</span>%
+          </p>
+          <p>
+            <label>Brightness: </label
+            ><input
+              type="range"
+              id="sliderBrightness"
+              min="0"
+              max="300"
+              value="100"
+              class="sliders"
+            />
+            <span id="numBrightness">100</span>%
+          </p>
+          <p>
+            <label>Hue Rotate: </label
+            ><input
+              type="range"
+              id="sliderHue"
+              min="0"
+              max="360"
+              value="0"
+              class="sliders"
+            />
+            <span id="numHue">0</span>deg
+          </p>
+          <p>
+            <label>Grayscale: </label
+            ><input
+              type="range"
+              id="sliderGray"
+              min="0"
+              max="100"
+              value="0"
+              class="sliders"
+            />
+            <span id="numGray">0</span>%
+          </p>
+          <p>
+            <label>Blur: </label
+            ><input
+              type="range"
+              id="sliderBlur"
+              min="0"
+              max="10"
+              value="0"
+              class="sliders"
+            />
+            <span id="numBlur">0</span>px
+          </p>
+          <p><input type="button" id="resetFilters" value="Reset"></input></p>
+        </form>
+      </div>
+      <figure id="imgManipulated">
+        <img src="images/medium/painting1.jpg" />
+        <figcaption>
+          <em>Still Life with Flowers in a Glass Vase</em> <br />
+          <span>Davidsz. de Heem, 1650 - 1683</span>
+        </figcaption>
+      </figure>
+      <div id="thumbBox">
+        <div>
+          <img
+            src="images/small/painting1.jpg"
+            alt="Still Life with Flowers in a Glass Vase"
+            title="Jan Davidsz. de Heem, 1650 - 1683"
+          />
+        </div>
+        <div>
+          <img
+            src="images/small/painting2.jpg"
+            alt="Portrait of Alida Christina Assink"
+            title="Jan Adam Kruseman, 1833"
+          />
+        </div>
+        <div>
+          <img
+            src="images/small/painting3.jpg"
+            alt="Self-portrait"
+            title="Vincent van Gogh, 1887"
+          />
+        </div>
+        <div>
+          <img
+            src="images/small/painting4.jpg"
+            alt="William II, Prince of Orange, and his Bride, Mary Stuart"
+            title="Anthony van Dyck, 1641"
+          />
+        </div>
+        <div>
+          <img
+            src="images/small/painting5.jpg"
+            alt="Milkmaid"
+            title="Johannes Vermeer, c. 1660"
+          />
+        </div>
+      </div>
+    </main>
+    <script>
+      $(document).ready(function() {
+        $("body").on("click", "#thumbBox div img", function() {
+          var Imgsrc = $(this)
+            .attr("src")
+            .replace("small", "medium");
+          $("#imgManipulated img").attr("src", Imgsrc);
+          var ImgAlt = $(this).attr("alt");
+          var ImgTitle = $(this).attr("title");
+          $("#imgManipulated figcaption em").text(ImgAlt);
+          $("#imgManipulated figcaption span").text(ImgTitle);
+        });
+
+        opacity = 100;
+        saturation = 100;
+        brightness = 100;
+        hue = 0;
+        gray = 0;
+        blur = 0;
+        $("#sliderOpacity").on("input propertychange", function() {
+          opacity = $("#sliderOpacity").val();
+          $("#numOpacity").text(opacity);
+          filter();
+        });
+        $("#sliderSaturation").on("input propertychange", function() {
+          saturation = $("#sliderSaturation").val();
+          $("#numSaturation").text(saturation);
+          filter();
+        });
+        $("#sliderBrightness").on("input propertychange", function() {
+          brightness = $("#sliderBrightness").val();
+          filter();
+        });
+        $("#sliderHue").on("input propertychange", function() {
+          hue = $("#sliderHue").val();
+          filter();
+        });
+        $("#sliderGray").on("input propertychange", function() {
+          gray = $("#sliderGray").val();
+          $("#numGray").text(gray);
+          filter();
+        });
+        $("#sliderBlur").on("input propertychange", function() {
+          blur = $("#sliderBlur").val();
+          $("#numBlur").text(blur);
+          filter();
+        });
+
+        function filter() {
+          $("#imgManipulated img").css(
+            "-webkit-filter",
+            "opacity(" +
+              opacity * 0.01 +
+              ")" +
+              " saturate(" +
+              saturation * 0.01 +
+              ")" +
+              " brightness(" +
+              brightness * 0.01 +
+              ")" +
+              " hue-rotate(" +
+              hue +
+              "deg)" +
+              " grayscale(" +
+              gray +
+              "%)" +
+              " blur(" +
+              blur +
+              "px)"
+          );
+          $("#imgManipulated img").css(
+            "filter",
+            "opacity(" +
+              opacity * 0.01 +
+              ")" +
+              " saturate(" +
+              saturation * 0.01 +
+              ")" +
+              " brightness(" +
+              brightness * 0.01 +
+              ")" +
+              " hue-rotate(" +
+              hue +
+              "deg)" +
+              " grayscale(" +
+              gray +
+              "%)" +
+              " blur(" +
+              blur +
+              "px)"
+          );
+        }
+
+        $("#resetFilters").on("click", function() {
+          $("#imgManipulated img").css("-webkit-filter", "none");
+          $("#imgManipulated img").css("filter", "none");
+        });
+      });
+    </script>
+  </body>
+</html>
